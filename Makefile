@@ -31,7 +31,7 @@ check: ## Checks code for linting/construct errors
 
 test: check ## Runs all tests
 	@echo "==> Running tests..."
-	@go test --race $(TEST) -parallel=20
+	@go test -v --race $(TEST) -parallel=20
 	@echo ""
 
 coverage: ## Runs code coverage
