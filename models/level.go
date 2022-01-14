@@ -1,8 +1,7 @@
-package log
+package models
 
-import "os"
-
-const defaultLogLayout = "%D %T %L (%f:%i) ▶ %l"
+// Level used to filter log message by the Logger.
+type Level uint8
 
 // logging levels
 const (
@@ -17,7 +16,7 @@ const (
 )
 
 // Level2Str used to convert Level value to string.
-var Level2Str = []string{
+var level2Str = []string{
 	"PANIC", // PanicLevel
 	"FATAL", // FatalLevel
 	"ERROR", // ErrorLevel
@@ -28,4 +27,6 @@ var Level2Str = []string{
 	"DEBUG", // DebugLevel
 }
 
-var stdLogger = New(InfoLevel, os.Stdout, defaultLogLayout)
+func LevelToString(l Level) string {
+	return level2Str[l]
+}
