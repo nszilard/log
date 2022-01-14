@@ -1,5 +1,11 @@
 # Log
 
+[![CI](https://github.com/nszilard/log/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/nszilard/log/actions/workflows/ci.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/nszilard/log)](https://goreportcard.com/report/github.com/nszilard/log)
+[![GoDoc](https://godoc.org/github.com/nszilard/log?status.svg)](https://godoc.org/github.com/nszilard/log)
+
+---
+
 Log is a flexible logger for Golang applications. Inspired by [xfxdev/xlog](https://github.com/xfxdev/xlog).
 
 > ***NOTICE*** Neither `Fatal(f)` nor `Panic(f)` functions exit the running code.
