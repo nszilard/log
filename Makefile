@@ -13,41 +13,37 @@ TEST?=$$(go list ./... | grep -v /vendor/)
 #--------------------------------------------------
 # Targets
 #--------------------------------------------------
+.PHONY: bootstrap
 bootstrap: ## Downloads and cleans up all dependencies
 	@go mod tidy
 
+.PHONY: fmt
 fmt: ## Formats go files
-	@echo "==> Formatting files..."
 	@gofmt -w -s $(GO_FILES)
-	@echo ""
 
+.PHONY: check
 check: ## Checks code for linting/construct errors
-	@echo "==> Checking if files are well formatted..."
 	@gofmt -l $(GO_FILES)
-	@echo ""
-	@echo "==> Checking if files pass go vet..."
 	@go list -f '{{.Dir}}' ./... | xargs go vet;
-	@echo ""
 
+.PHONY: test
 test: check ## Runs all tests
-	@echo "==> Running tests..."
-	@go test -v --race $(TEST) -parallel=20
-	@echo ""
+	@go test --race $(TEST) -parallel=20
 
-coverage: ## Runs code coverage
+.PHONY: benchmark
+benchmark: check ## Runs all benchmarks
+	@go test -bench=. -benchmem
+
+.PHONY: coverage
+coverage: test ## Runs the tests and shows the code coverage report
 	@mkdir -p .cover
 	@go test $(TEST) -race -coverprofile=.cover/cover.out -covermode=atomic
-
-show-coverage: coverage ## Shows code coverage report in your web browser
 	@go tool cover -html=.cover/cover.out
 
-.PHONY: bootstrap check package fmt test coverage show-coverage clean help
-
+.PHONY: clean
 clean: ## Cleans up temporary and compiled files
-	@echo "==> Cleaning up ..."
 	@rm -rf .cover
-	@echo "    [✓]"
-	@echo ""
 
+.PHONY: help
 help: ## Shows available targets
 	@fgrep -h "## " $(MAKEFILE_LIST) | fgrep -v fgrep | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-13s\033[0m %s\n", $$1, $$2}'
